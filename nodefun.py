@@ -38,14 +38,3 @@ class Node:
             return red_cost
         else:
             return red_cost + p_lb + cost
-
-    def __lt__(self, other):
-        a = self.lower_bound
-        b = other.lower_bound
-        return (a > b) ^ (a < b)
-
-    def __str__(self):
-        return str(self.city)
-
-    def __repr__(self):
-        return f'{self.city}, lb = {self.lower_bound}'

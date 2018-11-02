@@ -69,7 +69,7 @@ class TSP:
 
 
 if __name__ == '__main__':
-    tsp = TSP(filename='10_test.txt')
+    tsp = TSP(filename='test/10_test.txt')
     start = time.time()
     tsp.Brute_Force()
     end = time.time()

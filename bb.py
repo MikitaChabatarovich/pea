@@ -31,6 +31,7 @@ def LCBB(matrix):
                                curr_node.tour, curr_city, i, curr_node.lower_bound)
                 heapq.heappush(live_nodes, (newNode.lower_bound, newNode))
 
+
 def parseArr(s):
     ar = []
     line = s.split()

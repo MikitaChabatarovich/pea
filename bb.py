@@ -53,7 +53,10 @@ def read_matrix(filename):
 
 
 if __name__ == '__main__':
-    matrix = read_matrix(filename='test/15_test.txt')
+    cities = input("number of cities = ")
+    if not cities:
+        cities = 6
+    matrix = read_matrix(filename=f'test/{cities}_test.txt')
     m = set_dig_inf(matrix)
     start = time.time()
     tour, cost = LCBB(m)

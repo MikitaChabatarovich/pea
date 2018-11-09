@@ -1,6 +1,6 @@
 import numpy as np
 import time
-import bb
+from bb import LCBB, read_matrix, set_dig_inf
 
 
 class TSP:
@@ -47,6 +47,15 @@ class TSP:
                 self.tourLength = length
                 self.minTour = tour
 
+    def BranchAndBound(self):
+        m = set_dig_inf(self.dist_matrix)
+        tour, cost = LCBB(m)
+        listTour = []
+        for edge in tour:
+            listTour.append(edge[0])
+        self.minTour = listTour
+        self.tourLength = cost
+
     def print_result(self):
         print('Shortest tour is:', self.minTour)
         print('It has a length of:', self.tourLength, 'km')
@@ -69,7 +78,7 @@ class TSP:
 
 
 if __name__ == '__main__':
-    tsp = TSP(filename='test/10_test.txt')
+    tsp = TSP(filename='test/13_test.txt')
     start = time.time()
     tsp.Brute_Force()
     end = time.time()

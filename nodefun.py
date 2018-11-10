@@ -3,7 +3,7 @@ import numpy as np
 
 class Node:
     def __init__(self, reduced_matrix, level, p_tour, fr, to, p_lb=None):
-        self.reduced_matrix = reduced_matrix.copy() #memory error here
+        self.reduced_matrix = reduced_matrix.copy()  # memory error here
         self.level = level
         self.lower_bound = self.calc_lower_bound(fr, to, p_lb)
         self.tour = p_tour.copy()

@@ -1,6 +1,6 @@
 import numpy as np
 import time
-from bb import LCBB, read_matrix, set_dig_inf
+from bb import LCBB, set_dig_inf
 
 
 class TSP:

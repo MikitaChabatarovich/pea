@@ -1,6 +1,6 @@
 import numpy as np
 import heapq
-from nodefun import Node
+from node import Node
 import time
 
 
@@ -43,7 +43,7 @@ def parseArr(s):
 
 def read_matrix(filename):
     with open(filename) as f:
-       # nrows = int(f.readline())
+        #  nrows = int(f.readline())
         next(f)
         matrix = np.array(parseArr(f.readline()))
         for line in f.readlines():

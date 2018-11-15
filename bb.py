@@ -16,7 +16,7 @@ def LCBB(matrix):
     root = Node(matrix, 0, [], -1, 0)
     heapq.heappush(live_nodes, (root.lower_bound, root))
 
-    while(len(live_nodes) != 0):
+    while live_nodes:
         curr_node = heapq.heappop(live_nodes)[1]
         curr_city = curr_node.city
 

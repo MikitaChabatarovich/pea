@@ -13,12 +13,10 @@ class TSP:
 
     @staticmethod
     def parseArr(s):
-        ar = []
+        arr = []
         line = s.split()
-        for n in line:
-            if n != '':
-                ar.append(int(n))
-        return np.array(ar)
+        arr = [int(n) for n in line if n != '']
+        return np.array(arr)
 
     @staticmethod
     def permutations(lst):
@@ -50,9 +48,7 @@ class TSP:
     def BranchAndBound(self):
         m = set_dig_inf(self.dist_matrix)
         tour, cost = LCBB(m)
-        listTour = []
-        for edge in tour:
-            listTour.append(edge[0])
+        listTour = [edge[0] for edge in tour]
         self.minTour = listTour
         self.tourLength = cost
 

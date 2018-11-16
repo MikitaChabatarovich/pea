@@ -7,6 +7,7 @@ class Node:
         self.level = level
         self.lower_bound = self.calc_lower_bound(fr, to, p_lb)
         self.tour = p_tour.copy()
+        self.city = to
         if level != 0:
             self.reduced_matrix[fr] = np.Inf
             self.reduced_matrix[:, to] = np.Inf
@@ -14,8 +15,6 @@ class Node:
             tour = p_tour.copy()
             tour.append((fr, to))
             self.tour = tour
-
-        self.city = to
 
     @staticmethod
     def reduce_martix(matrix):

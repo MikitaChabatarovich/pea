@@ -13,7 +13,6 @@ class TSP:
 
     @staticmethod
     def parseArr(s):
-        arr = []
         line = s.split()
         arr = [int(n) for n in line if n != '']
         return np.array(arr)
@@ -74,7 +73,7 @@ class TSP:
 
 
 if __name__ == '__main__':
-    tsp = TSP(filename='test/13_test.txt')
+    tsp = TSP(filename='test/10_test.txt')
     start = time.time()
     tsp.Brute_Force()
     end = time.time()

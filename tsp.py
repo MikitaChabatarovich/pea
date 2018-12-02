@@ -1,6 +1,7 @@
 import numpy as np
 import time
 from bb import LCBB, set_dig_inf
+from simulated_annealing import SimulatedAnnealing
 
 
 class TSP:
@@ -29,6 +30,13 @@ class TSP:
                 remLst = lst[:i] + lst[i + 1:]
                 for p in TSP.permutations(remLst):
                     yield [m] + p
+    
+    @staticmethod
+    def set_dig_inf(matrix):
+        matrix = matrix.astype('float')
+        for i in range(matrix.shape[0]):
+            matrix[i][i] = np.Inf
+        return matrix
 
     def Brute_Force(self):
         size = self.dist_matrix.shape[0]
@@ -51,6 +59,7 @@ class TSP:
         self.minTour = listTour
         self.tourLength = cost
 
+    
     def print_result(self):
         print('Shortest tour is:', self.minTour)
         print('It has a length of:', self.tourLength, 'km')
@@ -65,11 +74,7 @@ class TSP:
                 matrix = np.vstack([matrix, linearr])
         self.dist_matrix = matrix
 
-    def set_dig_inf(matrix):
-        matrix = matrix.astype('float')
-        for i in range(matrix.shape[0]):
-            matrix[i][i] = np.Inf
-        return matrix
+
 
 
 if __name__ == '__main__':

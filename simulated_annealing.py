@@ -1,6 +1,7 @@
 import numpy as np 
 import random
 import math
+from time import sleep
 
 def read_matrix(filename):
         with open(filename) as f:
@@ -30,12 +31,12 @@ def calc_tour_length(tour, dist_matrix):
         length += dist_matrix[fr][0]
         return length
 
-def swap_random_elements(state):
+def swap_random_elements(state): #better
     n = len(state)
     newstate = list(state)
     i = random.randint(0, n-1)
     j = random.randint(0, n-1)
-    if i > i:
+    if i > j:
         newstate[j], newstate[i] = newstate[i], newstate[j]
     else: 
         newstate[i], newstate[j] = newstate[j], newstate[i]
@@ -46,7 +47,7 @@ def swap_random_neighbors(state):
     newstate = list(state)
     i = random.randint(0, n-1)
     j = i+1 if i != n-1 else -1
-    if i > i:
+    if i > j:
         newstate[j], newstate[i] = newstate[i], newstate[j]
     else: 
         newstate[i], newstate[j] = newstate[j], newstate[i]
@@ -60,9 +61,9 @@ def make_transition(p):
     return True if random.uniform(0,1) <= p else False 
 
 
-def SimulatedAnnealing(cities, init_T, end_T, cooling_factor):
+def SimulatedAnnealing(cities, init_T, end_T, cooling_factor,init_state=None):
     n = len(cities)
-    state = random_tour(n)
+    state = random_tour(n) if init_state is None else init_state
     current_energy = calc_tour_length(state, cities)
     T = init_T
     
@@ -81,15 +82,25 @@ def SimulatedAnnealing(cities, init_T, end_T, cooling_factor):
 
         T  =  T*cooling_factor
         if T <= end_T:
-            print(_, 'iterations')
             return state, current_energy
 
 
 
 if __name__ == "__main__":
     matrix = read_matrix('test/10_test.txt')
-    tour, length= SimulatedAnnealing(matrix, 10**10, 0.1, 0.9)
-    print(tour, length)
-    print(calc_tour_length(tour, matrix))
-    
+    minlength = np.Inf
+    mintour = None
+
+    init_T = 10**70
+    cooling_factor = 0.99
+    tour, length = SimulatedAnnealing(matrix, init_T, 0.1,  cooling_factor)
+    erlist = [] 
+    for _ in range(50):
+        tour, length = SimulatedAnnealing(matrix, init_T, 0.1,  cooling_factor)
+        error  = int((length - 212)/212*100)
+        erlist.append(error)
+        # print(tour, length, str(error) + "%")
+    print(sum(erlist)/len(erlist))
+
+  
    

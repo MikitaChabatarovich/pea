@@ -32,16 +32,25 @@ def calc_tour_length(tour, dist_matrix):
 
 def swap_random_elements(state):
     n = len(state)
+    newstate = list(state)
     i = random.randint(0, n-1)
     j = random.randint(0, n-1)
     if i > i:
-        state[j], state[i] = state[i], state[j]
+        newstate[j], newstate[i] = newstate[i], newstate[j]
     else: 
-        state[i], state[j] = state[j], state[i]
-    return state
+        newstate[i], newstate[j] = newstate[j], newstate[i]
+    return newstate
 
 def swap_random_neighbors(state):
-    pass
+    n = len(state)
+    newstate = list(state)
+    i = random.randint(0, n-1)
+    j = i+1 if i != n-1 else -1
+    if i > i:
+        newstate[j], newstate[i] = newstate[i], newstate[j]
+    else: 
+        newstate[i], newstate[j] = newstate[j], newstate[i]
+    return newstate
 
 
 def transition_probability(delta_energy, T):
@@ -51,12 +60,11 @@ def make_transition(p):
     return True if random.uniform(0,1) <= p else False 
 
 
-def SimulatedAnnealing(cities, init_t, end_t, cooling_factor):
+def SimulatedAnnealing(cities, init_T, end_T, cooling_factor):
     n = len(cities)
-    cooling_factor = 0.95
     state = random_tour(n)
     current_energy = calc_tour_length(state, cities)
-    T = init_t
+    T = init_T
     
     for _ in range(1,100000):
         candidat_state = swap_random_elements(state)
@@ -71,20 +79,17 @@ def SimulatedAnnealing(cities, init_t, end_t, cooling_factor):
                 current_energy = candidant_energy
                 state = candidat_state
 
-        T  -=  T*cooling_factor
-        if T <= end_t:
-            return state, calc_tour_length(state, cities)
+        T  =  T*cooling_factor
+        if T <= end_T:
+            print(_, 'iterations')
+            return state, current_energy
 
 
 
 if __name__ == "__main__":
     matrix = read_matrix('test/10_test.txt')
-
     tour, length= SimulatedAnnealing(matrix, 10**10, 0.1, 0.9)
     print(tour, length)
-    tour, length= SimulatedAnnealing(matrix, 10**10, 0.1, 0.95)
-    print(tour, length)
-    tour, length= SimulatedAnnealing(matrix, 10**50, 0.1, 0.9)
-    print(tour, length)
-    tour, length= SimulatedAnnealing(matrix, 10**10, 0.1, 0.9)
-    print(tour, length)
+    print(calc_tour_length(tour, matrix))
+    
+   

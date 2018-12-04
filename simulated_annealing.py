@@ -74,16 +74,18 @@ def SimulatedAnnealing(cities, init_T, end_T, cooling_factor,init_state=None):
         if(candidant_energy < current_energy):
             current_energy = candidant_energy
             state = candidat_state
+
         else:
             p = transition_probability(candidant_energy - current_energy, T)
             if make_transition(p):
                 current_energy = candidant_energy
                 state = candidat_state
+               
 
         T  =  T*cooling_factor
         if T <= end_T:
-            return state, current_energy
-
+                return state, current_energy
+    return state, current_energy
 
 
 if __name__ == "__main__":
@@ -100,7 +102,7 @@ if __name__ == "__main__":
         error  = int((length - 212)/212*100)
         erlist.append(error)
         # print(tour, length, str(error) + "%")
-    print(sum(erlist)/len(erlist))
+    print(sum(erlist)/len(erlist))  
 
   
    

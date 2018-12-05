@@ -2,21 +2,7 @@ import numpy as np
 import random
 import math
 from time import sleep
-
-def read_matrix(filename):
-        with open(filename) as f:
-           # nrows = int(f.readline())
-            next(f)
-            matrix = np.array(parseArr(f.readline()))
-            for line in f.readlines():
-                linearr = parseArr(line)
-                matrix = np.vstack([matrix, linearr])
-            return matrix
-
-def parseArr(s):
-        line = s.split()
-        arr = [int(n) for n in line if n != '']
-        return np.array(arr)      
+from utils import read_matrix, greedy_solution     
 
 def random_tour(n):
     return random.sample(range(1,n), n-1)      
@@ -63,7 +49,7 @@ def make_transition(p):
 
 def SimulatedAnnealing(cities, init_T, end_T, cooling_factor,init_state=None):
     n = len(cities)
-    state = random_tour(n) if init_state is None else init_state
+    state = greedy_solution(cities) if init_state is None else init_state
     current_energy = calc_tour_length(state, cities)
     T = init_T
     
@@ -93,16 +79,17 @@ if __name__ == "__main__":
     minlength = np.Inf
     mintour = None
 
-    init_T = 10**70
+    init_T = 10**40
     cooling_factor = 0.99
     tour, length = SimulatedAnnealing(matrix, init_T, 0.1,  cooling_factor)
-    erlist = [] 
-    for _ in range(50):
-        tour, length = SimulatedAnnealing(matrix, init_T, 0.1,  cooling_factor)
-        error  = int((length - 212)/212*100)
-        erlist.append(error)
-        # print(tour, length, str(error) + "%")
-    print(sum(erlist)/len(erlist))  
+    print(tour, length)
+    #erlist = [] 
+    # for _ in range(50):
+    #     tour, length = SimulatedAnnealing(matrix, init_T, 0.1,  cooling_factor)
+    #     error  = int((length - 212)/212*100)
+    #     erlist.append(error)
+    #     # print(tour, length, str(error) + "%")
+    # print(sum(erlist)/len(erlist))  
 
   
    

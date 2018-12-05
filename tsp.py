@@ -1,8 +1,8 @@
 import numpy as np
 import time
-from bb import LCBB, set_dig_inf
+from bb import LCBB
 from simulated_annealing import SimulatedAnnealing
-from utils import read_matrix
+from utils import read_matrix, calc_tour_length, set_dig_inf
 import itertools
 
 class TSP:
@@ -16,13 +16,7 @@ class TSP:
     def Brute_Force(self):
         size = self.dist_matrix.shape[0]
         for tour in itertools.permutations(range(1, size)):
-            fr = 0
-            length = 0
-            for city in range(size - 1):
-                to = tour[city]
-                length += self.dist_matrix[fr][to]
-                fr = to
-            length += self.dist_matrix[fr][0]
+            length = calc_tour_length(tour, self.dist_matrix)
             if length < self.tourLength:
                 self.tourLength = length
                 self.minTour = tour
@@ -41,7 +35,7 @@ class TSP:
 
 
 if __name__ == '__main__':
-    tsp = TSP(filename='test/6_test.txt')
+    tsp = TSP(filename='test/10_test.txt')
     start = time.time()
     tsp.Brute_Force()
     end = time.time()

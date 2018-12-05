@@ -37,7 +37,6 @@ def transition_probability(delta_energy, T):
 def make_transition(p):
     return True if random.uniform(0,1) <= p else False 
 
-
 def SimulatedAnnealing(cities, init_T, end_T, cooling_factor,init_state=None):
     n = len(cities)
     state = greedy_solution(cities) if init_state is None else init_state

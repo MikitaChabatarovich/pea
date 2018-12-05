@@ -2,20 +2,11 @@ import numpy as np
 import random
 import math
 from time import sleep
-from utils import read_matrix, greedy_solution     
+from utils import read_matrix, greedy_solution, calc_tour_length     
 
 def random_tour(n):
     return random.sample(range(1,n), n-1)      
 
-def calc_tour_length(tour, dist_matrix):
-        fr = 0
-        length = 0
-        for city in range(len(tour)):
-            to = tour[city]
-            length += dist_matrix[fr][to]
-            fr = to
-        length += dist_matrix[fr][0]
-        return length
 
 def swap_random_elements(state): #better
     n = len(state)
@@ -50,6 +41,7 @@ def make_transition(p):
 def SimulatedAnnealing(cities, init_T, end_T, cooling_factor,init_state=None):
     n = len(cities)
     state = greedy_solution(cities) if init_state is None else init_state
+    print(calc_tour_length(state, cities))
     current_energy = calc_tour_length(state, cities)
     T = init_T
     

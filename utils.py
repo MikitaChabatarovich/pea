@@ -1,6 +1,7 @@
 import numpy as np
 
 def greedy_solution(matrix):
+    matrix = set_dig_inf(matrix)
     matrix[:,0] = np.Inf
     min_index =  np.argmin(matrix[0])
     visited = [min_index]   
@@ -26,4 +27,20 @@ def parseArr(s):
         arr = [int(n) for n in line if n != '']
         return np.array(arr)  
 
-    
+
+def set_dig_inf(matrix):
+    matrix = matrix.astype('float')
+    for i in range(matrix.shape[0]):
+        matrix[i][i] = np.Inf
+    return matrix
+
+
+def calc_tour_length(tour, dist_matrix):
+        fr = 0
+        length = 0
+        for city in range(len(tour)):
+            to = tour[city]
+            length += dist_matrix[fr][to]
+            fr = to
+        length += dist_matrix[fr][0]
+        return length

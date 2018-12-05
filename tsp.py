@@ -3,6 +3,7 @@ import time
 from bb import LCBB, set_dig_inf
 from simulated_annealing import SimulatedAnnealing
 from utils import read_matrix
+import itertools
 
 class TSP:
     def __init__(self, dist_matrix=None, filename=None):
@@ -12,22 +13,9 @@ class TSP:
         if filename is not None:
             self.dist_matrix = read_matrix(filename)
 
-    @staticmethod
-    def permutations(lst):
-        if len(lst) == 0:
-            yield []
-        if len(lst) == 1:
-            yield lst
-        else:
-            for i in range(len(lst)):
-                m = lst[i]
-                remLst = lst[:i] + lst[i + 1:]
-                for p in TSP.permutations(remLst):
-                    yield [m] + p
-
     def Brute_Force(self):
         size = self.dist_matrix.shape[0]
-        for tour in TSP.permutations(list(range(1, size))):
+        for tour in itertools.permutations(range(1, size)):
             fr = 0
             length = 0
             for city in range(size - 1):

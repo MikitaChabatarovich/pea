@@ -2,7 +2,7 @@ import numpy as np
 import time
 from bb import LCBB, set_dig_inf
 from simulated_annealing import SimulatedAnnealing
-
+from utils import read_matrix
 
 class TSP:
     def __init__(self, dist_matrix=None, filename=None):
@@ -10,13 +10,7 @@ class TSP:
         self.minTour = []
         self.tourLength = np.Inf
         if filename is not None:
-            self.read_matrix(filename)
-
-    @staticmethod
-    def parseArr(s):
-        line = s.split()
-        arr = [int(n) for n in line if n != '']
-        return np.array(arr)
+            self.dist_matrix = read_matrix(filename)
 
     @staticmethod
     def permutations(lst):
@@ -64,21 +58,9 @@ class TSP:
         print('Shortest tour is:', self.minTour)
         print('It has a length of:', self.tourLength, 'km')
 
-    def read_matrix(self, filename):
-        with open(filename) as f:
-           # nrows = int(f.readline())
-            next(f)
-            matrix = np.array(TSP.parseArr(f.readline()))
-            for line in f.readlines():
-                linearr = TSP.parseArr(line)
-                matrix = np.vstack([matrix, linearr])
-        self.dist_matrix = matrix
-
-
-
 
 if __name__ == '__main__':
-    tsp = TSP(filename='test/10_test.txt')
+    tsp = TSP(filename='test/6_test.txt')
     start = time.time()
     tsp.Brute_Force()
     end = time.time()

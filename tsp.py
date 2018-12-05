@@ -24,13 +24,6 @@ class TSP:
                 remLst = lst[:i] + lst[i + 1:]
                 for p in TSP.permutations(remLst):
                     yield [m] + p
-    
-    @staticmethod
-    def set_dig_inf(matrix):
-        matrix = matrix.astype('float')
-        for i in range(matrix.shape[0]):
-            matrix[i][i] = np.Inf
-        return matrix
 
     def Brute_Force(self):
         size = self.dist_matrix.shape[0]

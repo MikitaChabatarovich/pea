@@ -13,14 +13,17 @@ def greedy_solution(matrix):
         
 
 def read_matrix(filename):
-        with open(filename) as f:
-           # nrows = int(f.readline())
-            next(f)
-            matrix = np.array(parseArr(f.readline()))
-            for line in f.readlines():
-                linearr = parseArr(line)
-                matrix = np.vstack([matrix, linearr])
-            return matrix
+    """
+    return numpy matrix from given file
+    """
+    with open(filename) as f:
+        # nrows = int(f.readline())
+        next(f)
+        matrix = np.array(parseArr(f.readline()))
+        for line in f.readlines():
+            linearr = parseArr(line)
+            matrix = np.vstack([matrix, linearr])
+        return matrix
 
 def parseArr(s):
         line = s.split()

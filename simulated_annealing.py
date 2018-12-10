@@ -39,9 +39,11 @@ def make_transition(p):
 
 def SimulatedAnnealing(cities, init_T, end_T, cooling_factor,init_state=None):
     n = len(cities)
-    state = greedy_solution(cities) if init_state is None else init_state
-    print(calc_tour_length(state, cities))
+    state = random_tour(n) if init_state is None else init_state
     current_energy = calc_tour_length(state, cities)
+    best_state = state
+    best_state_energy = current_energy
+    
     T = init_T
     
     for _ in range(1,100000):
@@ -51,36 +53,33 @@ def SimulatedAnnealing(cities, init_T, end_T, cooling_factor,init_state=None):
         if(candidant_energy < current_energy):
             current_energy = candidant_energy
             state = candidat_state
-
+            if(current_energy < best_state_energy):
+                best_state = state
+                best_state_energy = current_energy
         else:
             p = transition_probability(candidant_energy - current_energy, T)
             if make_transition(p):
                 current_energy = candidant_energy
                 state = candidat_state
+                if(current_energy < best_state_energy):
+                    best_state = state
+                    best_state_energy = current_energy
                
-
         T  =  T*cooling_factor
         if T <= end_T:
-                return state, current_energy
-    return state, current_energy
+                return best_state, best_state_energy              
+    return best_state, best_state_energy
 
 
 if __name__ == "__main__":
     matrix = read_matrix('test/10_test.txt')
     minlength = np.Inf
     mintour = None
-
-    init_T = 10**40
+    init_T = 10**20
     cooling_factor = 0.99
-    tour, length = SimulatedAnnealing(matrix, init_T, 0.1,  cooling_factor)
+    end_T = 0.001
+    tour, length = SimulatedAnnealing(matrix, init_T, end_T,  cooling_factor)
     print(tour, length)
-    #erlist = [] 
-    # for _ in range(50):
-    #     tour, length = SimulatedAnnealing(matrix, init_T, 0.1,  cooling_factor)
-    #     error  = int((length - 212)/212*100)
-    #     erlist.append(error)
-    #     # print(tour, length, str(error) + "%")
-    # print(sum(erlist)/len(erlist))  
 
   
    

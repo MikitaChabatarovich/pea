@@ -32,18 +32,19 @@ def swap_random_neighbors(state):
         newstate[i], newstate[j] = newstate[j], newstate[i]
     return newstate
 
+
 def invert(state):
     n = len(state)
     newstate = list(state)
-    i = random.randint(0, n-1)
-    j = random.randint(0, n-1)
+    i = random.randint(0, n - 1)
+    j = random.randint(0, n - 1)
     r = j - i
-    if r*r == 1:
-        j+=1
+    if r * r == 1:
+        j += 1
     if i > j:
         newstate[i:j] = newstate[i:j][::-1]
     else:
-        newstate[i:j] = newstate[i:j][::-1]  
+        newstate[i:j] = newstate[i:j][::-1]
     return newstate
 
 
@@ -56,16 +57,12 @@ def make_transition(p):
 
 
 def SimulatedAnnealing(cities, init_T, end_T, cooling_factor, init_state=None):
-    n = len(cities)
     state = greedy_solution(cities) if init_state is None else init_state
     current_energy = calc_tour_length(state, cities)
     best_state = state
     best_state_energy = current_energy
-    
     T = init_T
-    for _ in range(1, 100000):
-    
-    for _ in range(1,100000000):
+    for _ in range(1, 100000000):
         candidat_state = swap_random_elements(state)
         candidant_energy = calc_tour_length(candidat_state, cities)
 
@@ -83,21 +80,23 @@ def SimulatedAnnealing(cities, init_T, end_T, cooling_factor, init_state=None):
                 if(current_energy < best_state_energy):
                     best_state = state
                     best_state_energy = current_energy
-               
-        T  =  T*cooling_factor
+
+        T = T * cooling_factor
         if T <= end_T:
-                return best_state, best_state_energy              
+            return best_state, best_state_energy
     return best_state, best_state_energy
 
+
 def prd(value, optimal):
-    return round((value - optimal)/optimal*100, 2)
+    return round((value - optimal) / optimal * 100, 2)
+
 
 if __name__ == "__main__":
     cities10 = read_matrix('test/10_test.txt')
     import time
     cooling_factor = 0.99
     end_T = 0.1
-    init_T = 10*40
+    init_T = 10 * 40
     minlength = np.Inf
     avg_time_list = []
     avg_prd_list = []
@@ -105,11 +104,9 @@ if __name__ == "__main__":
         start = time.time()
         tour, length = SimulatedAnnealing(cities=cities10, init_T=init_T, end_T=end_T, cooling_factor=cooling_factor)
         end = time.time()
-        avg_time_list.append(end-start)
+        avg_time_list.append(end - start)
         avg_prd_list.append(prd(length, 212))
-    avg_prd = sum(avg_prd_list)/len(avg_prd_list)
-    avg_time = sum(avg_time_list)/len(avg_time_list)
+    avg_prd = sum(avg_prd_list) / len(avg_prd_list)
+    avg_time = sum(avg_time_list) / len(avg_time_list)
     print(avg_prd, '%')
     print(avg_time)
-   
-

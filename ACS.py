@@ -12,5 +12,31 @@ class AntColonySystem:
         self.alpha = alpha
         self.beta = beta
         self.explore_probability = explore_probability
-        # self.tau = ??
-        # self.pheromone = ??
+        self.tau = 1 / utils.calc_tour_length(utils.greedy_solution(self.costs_matrix), self.costs_matrix)
+        self.pheromone_matrix = self.tau * np.ones((self.size, self.size))
+    
+    def closest(self, location, visited):
+        minimun = np.Inf
+        result = None
+        for city in range(self.size):
+            if not visited[city] and self.costs_matrix[location][city] < minimun:
+                minimun = self.costs_matrix[location][city]
+                result = city
+        return result
+
+
+    def local_pheromone_udpate(self, i, j):
+        pass        
+
+    def global_pheromone_udpate(self):
+        pass
+
+    def next_city(self):
+        pass
+
+    def attraction(self):
+        pass
+    
+    def tour_from_matrix(self):
+        pass
+    

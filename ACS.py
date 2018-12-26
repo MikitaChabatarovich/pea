@@ -26,7 +26,8 @@ class AntColonySystem:
 
 
     def local_pheromone_udpate(self, i, j):
-        pass        
+        self.pheromone_matrix[i][j] = (1 - self.alpha) * self.pheromone_matrix[i][j] + self.alpha*self.tau
+        self.pheromone_matrix[j][i] = self.pheromone_matrix[i][j]        
 
     def global_pheromone_udpate(self):
         pass

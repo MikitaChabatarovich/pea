@@ -2,7 +2,7 @@ import numpy as np
 import random
 import math
 from time import sleep
-from utils import read_matrix, greedy_solution, calc_tour_length
+from utils import read_matrix, greedy_solution, calc_tour_length     
 
 
 def random_tour(n):
@@ -19,6 +19,7 @@ def swap_random_elements(state):  # better
     else:
         newstate[i], newstate[j] = newstate[j], newstate[i]
     return newstate
+
 
 
 def invert(state):
@@ -49,10 +50,10 @@ def SimulatedAnnealing(cities, init_T, end_T, cooling_factor, init_state=None):
     current_energy = calc_tour_length(state, cities)
     best_state = state
     best_state_energy = current_energy
-
+    
     T = init_T
-
-    for _ in range(1, 100000000):
+    
+    for _ in range(1,100000000):
         candidat_state = swap_random_elements(state)
         candidant_energy = calc_tour_length(candidat_state, cities)
 
@@ -95,11 +96,10 @@ if __name__ == "__main__":
         start = time.time()
         tour, length = SimulatedAnnealing(cities=cities10, init_T=init_T, end_T=end_T, cooling_factor=cooling_factor)
         end = time.time()
-        lenlist.append(length)
-        avg_time_list.append(end - start)
+        avg_time_list.append(end-start)
         avg_prd_list.append(prd(length, 212))
-    avg_prd = sum(avg_prd_list) / len(avg_prd_list)
-    avg_time = sum(avg_time_list) / len(avg_time_list)
-    print("best", min(lenlist))
-    print("PRD", avg_prd, '%')
-    print("Time", avg_time)
+    avg_prd = sum(avg_prd_list)/len(avg_prd_list)
+    avg_time = sum(avg_time_list)/len(avg_time_list)
+    print(avg_prd, '%')
+    print(avg_time)
+   

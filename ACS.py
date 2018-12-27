@@ -30,14 +30,63 @@ class AntColonySystem:
         self.pheromone_matrix[j][i] = self.pheromone_matrix[i][j]        
 
     def global_pheromone_udpate(self):
-        pass
+        for i in range(self.size):
+            for j in range(i+1, self.size):
+                self.pheromone_matrix[i][j] = (1 - self.alpha) * self.pheromone_matrix[i][j] + self.alpha * self.best_tour[i][j] / self.best_length
+                self.pheromone_matrix[j][i] = self.pheromone_matrix[i][j]
 
-    def next_city(self):
-        pass
+    def next_city(self, ant, location, visited):
+        result_city = None
+        q = np.random.random_sample()
+        if q <= self.explore_probability:
+            maximum = - np.Inf
+            for city in range(self.size):
+                if not visited[city]:
+                    f = self.attraction(location, city)
+                    if f > maximum:
+                        maximum = f
+                        result_city = city
+            if maximum != 0:
+                return result_city
+            else:
+                return self.closest(location, visited)
+        else:
+            prob_sum = 0
+            for city in range(self.size):
+                if not visited[city]:
+                    prob_sum += self.attraction(location, city)
+            if prob_sum == 0:
+                return self.closest(location, visited)
+            else:
+                R = np.random.random_sample()
+                s = 0
+                for city in range(self.size):
+                    if not visited[city]:
+                        s += self.attraction(location, city) / prob_sum
+                        if s > R:
+                            return city
 
-    def attraction(self):
-        pass
-    
+
+    def attraction(self, i,j):
+        if i+j:
+            return self.pheromone_matrix[i][j] / np.power(self.costs_matrix[i][j], self.beta)
+        else:
+            return 0
+
+
+    # TODO fix best tour
     def tour_from_matrix(self):
+        current = 0
+        prev = 0
+        tour = []
+        for _ in range(self.size):
+            next_city = 0
+            while self.best_tour[current][next_city] == 0 or prev == next_city:
+                next_city += 1
+            tour.append(next_city)
+            prev = current
+            current = next_city
+        return tour
+
+    def findTour():
         pass
-    

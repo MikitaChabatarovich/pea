@@ -47,3 +47,23 @@ def calc_tour_length(tour, dist_matrix):
             fr = to
         length += dist_matrix[fr][0]
         return length
+
+def prd(value, optimal):
+    return round((value - optimal) / optimal * 100, 2)
+
+best_dict = {
+    6: 132,
+    10: 212,
+    12: 264,
+    13: 269,
+    14: 282,
+    15: 291,
+    17: 2085, 
+    21: 2707,
+    24: 1272,
+    26: 937,
+    29: 1610,
+    42: 699,
+    58: 25395,
+    120 : 6942
+}

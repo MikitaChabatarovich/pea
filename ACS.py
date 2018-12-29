@@ -1,5 +1,6 @@
 import utils
 import numpy as np
+import time
 import logging
 logging.basicConfig(level=logging.DEBUG, filename='acs.log')
 
@@ -24,6 +25,7 @@ class AntColonySystem(object):
             if not visited[city] and self.costs_matrix[location][city] < minimun:
                 minimun = self.costs_matrix[location][city]
                 result = city
+        logging.debug(f'clostest return - {result}')
         return result
 
 
@@ -82,7 +84,6 @@ class AntColonySystem(object):
 
     # TODO fix best tour
     def tour_from_matrix(self):
-        logging.debug(self.best_tour)
         current = 0
         prev = 0
         tour = []
@@ -90,26 +91,29 @@ class AntColonySystem(object):
             next_city = 0
             while self.best_tour[current][next_city] == 0 or prev == next_city:
                 next_city += 1
-                logging.debug(f'next city - {next_city}')
             tour.append(next_city)
             prev = current
             current = next_city
-            logging.debug(f'current - {current}')
 
         return tour
 
     def find_tour(self):
+        start_time = time.time()
         location = np.zeros(self.num_ants, np.int32)
         
         for _ in range(self.num_Iter):
             visited = np.zeros((self.num_ants, self.size), dtype=bool)
             tours = [np.zeros((self.size, self.size), np.int8) for ant in range(self.num_ants) ]
             lengths = np.zeros(self.num_ants)
+            for ant in range(self.num_ants):
+                visited[ant][0] = True  
             for step in range(self.size+1):
+                # logging.debug(visited)
                 for ant in range(self.num_ants):
                     current = location[ant]
-                    if step < self.size:
+                    if step < self.size-1:
                         city = self.next_city(ant, location[ant], visited[ant])
+                        logging.debug(visited)
                     else:
                         city = 0
                     location[ant] = city
@@ -123,7 +127,10 @@ class AntColonySystem(object):
                 self.best_length = best_len
                 self.best_tour = tours[np.argmin(lengths)]
             self.global_pheromone_udpate()
+        end_1 = time.time()
         result = self.tour_from_matrix()
+        end_2 = time.time()
+        # logging.debug(f'size - {self.size}, time without list casting - {end_1-start_time}, actual time - {end_2-start_time}')
         return  result, utils.calc_tour_length(result, self.costs_matrix)
         
 
@@ -132,4 +139,7 @@ if __name__ == "__main__":
     m = utils.read_matrix(f'test/{n}_test.txt')
     ant_colony = AntColonySystem(m)
     tour, length = ant_colony.find_tour()
-    print(tour, length)
+    print(tour)
+    print("Tours length:", length)
+    print("PRD", utils.prd(length, utils.best_dict[int(n)]), '%')
+    

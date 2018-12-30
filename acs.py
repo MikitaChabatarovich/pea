@@ -4,12 +4,13 @@ import time
 import logging
 logging.basicConfig(level=logging.DEBUG, filename='acs.log')
 
+
 class AntColonySystem(object):
-    def __init__(self, costs_matrix, num_ants=10,num_Iter=100,alpha=0.1,beta=2,explore_probability=0.9):
+    def __init__(self, costs_matrix, num_ants=10, num_Iter=100, alpha=0.1, beta=2, explore_probability=0.9):
         self.costs_matrix = costs_matrix
         self.size = len(costs_matrix)
         self.best_tour = None
-        self.best_length = np.Inf 
+        self.best_length = np.Inf
         self.num_ants = num_ants
         self.num_Iter = num_Iter
         self.alpha = alpha
@@ -17,7 +18,7 @@ class AntColonySystem(object):
         self.explore_probability = explore_probability
         self.tau = 1 / utils.calc_tour_length(utils.greedy_solution(self.costs_matrix), self.costs_matrix)
         self.pheromone_matrix = self.tau * np.ones((self.size, self.size))
-    
+
     def closest(self, location, visited):
         minimun = np.Inf
         result = None
@@ -25,17 +26,15 @@ class AntColonySystem(object):
             if not visited[city] and self.costs_matrix[location][city] < minimun:
                 minimun = self.costs_matrix[location][city]
                 result = city
-        logging.debug(f'clostest return - {result}')
         return result
 
-
     def local_pheromone_udpate(self, i, j):
-        self.pheromone_matrix[i][j] = (1 - self.alpha) * self.pheromone_matrix[i][j] + self.alpha*self.tau
-        self.pheromone_matrix[j][i] = self.pheromone_matrix[i][j]        
+        self.pheromone_matrix[i][j] = (1 - self.alpha) * self.pheromone_matrix[i][j] + self.alpha * self.tau
+        self.pheromone_matrix[j][i] = self.pheromone_matrix[i][j]
 
     def global_pheromone_udpate(self):
         for i in range(self.size):
-            for j in range(i+1, self.size):
+            for j in range(i + 1, self.size):
                 self.pheromone_matrix[i][j] = (1 - self.alpha) * self.pheromone_matrix[i][j] + self.alpha * self.best_tour[i][j] / self.best_length
                 self.pheromone_matrix[j][i] = self.pheromone_matrix[i][j]
 
@@ -53,7 +52,7 @@ class AntColonySystem(object):
             if maximum != 0:
                 return result_city
             else:
-                result_city = self.closest(location, visited) 
+                result_city = self.closest(location, visited)
                 return result_city
         else:
             prob_sum = 0
@@ -61,7 +60,7 @@ class AntColonySystem(object):
                 if not visited[city]:
                     prob_sum += self.attraction(location, city)
             if prob_sum == 0:
-                result_city = self.closest(location, visited) 
+                result_city = self.closest(location, visited)
                 return result_city
             else:
                 R = np.random.random_sample()
@@ -73,21 +72,18 @@ class AntColonySystem(object):
                         if s > R:
                             return city
 
-
-    def attraction(self, i,j):
-        if i+j and i!=j:
-            result  = self.pheromone_matrix[i][j] / np.power(self.costs_matrix[i][j], self.beta)
+    def attraction(self, i, j):
+        if i + j and i != j:
+            result = self.pheromone_matrix[i][j] / np.power(self.costs_matrix[i][j], self.beta)
             return result
         else:
             return 0
 
-
-    # TODO fix best tour
     def tour_from_matrix(self):
         current = 0
         prev = 0
         tour = []
-        for _ in range(self.size-1):
+        for _ in range(self.size - 1):
             next_city = 0
             while self.best_tour[current][next_city] == 0 or prev == next_city:
                 next_city += 1
@@ -100,20 +96,18 @@ class AntColonySystem(object):
     def find_tour(self):
         start_time = time.time()
         location = np.zeros(self.num_ants, np.int32)
-        
+
         for _ in range(self.num_Iter):
             visited = np.zeros((self.num_ants, self.size), dtype=bool)
-            tours = [np.zeros((self.size, self.size), np.int8) for ant in range(self.num_ants) ]
+            tours = [np.zeros((self.size, self.size), np.int8) for ant in range(self.num_ants)]
             lengths = np.zeros(self.num_ants)
             for ant in range(self.num_ants):
-                visited[ant][0] = True  
-            for step in range(self.size+1):
-                # logging.debug(visited)
+                visited[ant][0] = True
+            for step in range(self.size + 1):
                 for ant in range(self.num_ants):
                     current = location[ant]
-                    if step < self.size-1:
+                    if step < self.size - 1:
                         city = self.next_city(ant, location[ant], visited[ant])
-                        logging.debug(visited)
                     else:
                         city = 0
                     location[ant] = city
@@ -127,12 +121,9 @@ class AntColonySystem(object):
                 self.best_length = best_len
                 self.best_tour = tours[np.argmin(lengths)]
             self.global_pheromone_udpate()
-        end_1 = time.time()
         result = self.tour_from_matrix()
-        end_2 = time.time()
-        # logging.debug(f'size - {self.size}, time without list casting - {end_1-start_time}, actual time - {end_2-start_time}')
-        return  result, utils.calc_tour_length(result, self.costs_matrix)
-        
+        return result, utils.calc_tour_length(result, self.costs_matrix)
+
 
 if __name__ == "__main__":
     n = input('number of cities  ')
@@ -142,4 +133,3 @@ if __name__ == "__main__":
     print(tour)
     print("Tours length:", length)
     print("PRD", utils.prd(length, utils.best_dict[int(n)]), '%')
-    

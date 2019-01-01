@@ -19,7 +19,7 @@ def read_matrix(filename):
     """
     with open(filename) as f:
         # nrows = int(f.readline())
-        next(f)
+        f.readline()
         matrix = np.array(parseArr(f.readline()))
         for line in f.readlines():
             linearr = parseArr(line)

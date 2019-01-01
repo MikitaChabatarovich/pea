@@ -94,7 +94,6 @@ class AntColonySystem(object):
         return tour
 
     def find_tour(self):
-        start_time = time.time()
         location = np.zeros(self.num_ants, np.int32)
 
         for _ in range(self.num_Iter):
@@ -103,7 +102,7 @@ class AntColonySystem(object):
             lengths = np.zeros(self.num_ants)
             for ant in range(self.num_ants):
                 visited[ant][0] = True
-            for step in range(self.size + 1):
+            for step in range(self.size):
                 for ant in range(self.num_ants):
                     current = location[ant]
                     if step < self.size - 1:

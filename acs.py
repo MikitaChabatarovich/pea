@@ -16,7 +16,9 @@ class AntColonySystem(object):
         self.alpha = alpha
         self.beta = beta
         self.explore_probability = explore_probability
-        self.tau = 1 / utils.calc_tour_length(utils.greedy_solution(self.costs_matrix), self.costs_matrix)
+        self.tau = 1 / \
+            utils.calc_tour_length(utils.greedy_solution(
+                self.costs_matrix), self.costs_matrix)
         self.pheromone_matrix = self.tau * np.ones((self.size, self.size))
 
     def closest(self, location, visited):
@@ -29,13 +31,15 @@ class AntColonySystem(object):
         return result
 
     def local_pheromone_udpate(self, i, j):
-        self.pheromone_matrix[i][j] = (1 - self.alpha) * self.pheromone_matrix[i][j] + self.alpha * self.tau
+        self.pheromone_matrix[i][j] = (
+            1 - self.alpha) * self.pheromone_matrix[i][j] + self.alpha * self.tau
         self.pheromone_matrix[j][i] = self.pheromone_matrix[i][j]
 
     def global_pheromone_udpate(self):
         for i in range(self.size):
             for j in range(i + 1, self.size):
-                self.pheromone_matrix[i][j] = (1 - self.alpha) * self.pheromone_matrix[i][j] + self.alpha * self.best_tour[i][j] / self.best_length
+                self.pheromone_matrix[i][j] = (
+                    1 - self.alpha) * self.pheromone_matrix[i][j] + self.alpha * self.best_tour[i][j] / self.best_length
                 self.pheromone_matrix[j][i] = self.pheromone_matrix[i][j]
 
     def next_city(self, ant, location, visited):
@@ -74,7 +78,8 @@ class AntColonySystem(object):
 
     def attraction(self, i, j):
         if i + j and i != j:
-            result = self.pheromone_matrix[i][j] / np.power(self.costs_matrix[i][j], self.beta)
+            result = self.pheromone_matrix[i][j] / \
+                np.power(self.costs_matrix[i][j], self.beta)
             return result
         else:
             return 0
@@ -98,7 +103,8 @@ class AntColonySystem(object):
 
         for _ in range(self.num_Iter):
             visited = np.zeros((self.num_ants, self.size), dtype=bool)
-            tours = [np.zeros((self.size, self.size), np.int8) for ant in range(self.num_ants)]
+            tours = [np.zeros((self.size, self.size), np.int8)
+                     for ant in range(self.num_ants)]
             lengths = np.zeros(self.num_ants)
             for ant in range(self.num_ants):
                 visited[ant][0] = True

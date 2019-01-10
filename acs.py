@@ -1,5 +1,11 @@
 import utils
 import numpy as np
+<<<<<<< HEAD
+=======
+import time
+import logging
+logging.basicConfig(level=logging.DEBUG, filename='acs.log')
+>>>>>>> parent of 5c3beea... put jupyter notebook to notebooks folder and formating
 
 
 class AntColonySystem(object):
@@ -74,7 +80,8 @@ class AntColonySystem(object):
 
     def attraction(self, i, j):
         if i + j and i != j:
-            result = self.pheromone_matrix[i][j] / np.power(self.costs_matrix[i][j], self.beta)
+            result = self.pheromone_matrix[i][j] / \
+                np.power(self.costs_matrix[i][j], self.beta)
             return result
         else:
             return 0

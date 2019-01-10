@@ -1,7 +1,5 @@
 import utils
 import numpy as np
-import logging
-logging.basicConfig(level=logging.DEBUG, filename='acs.log')
 
 
 class AntColonySystem(object):
@@ -70,7 +68,6 @@ class AntColonySystem(object):
                 s = 0
                 for city in range(self.size):
                     if not visited[city]:
-                        # TODO fix s become nan
                         s += self.attraction(location, city) / prob_sum
                         if s > R:
                             return city

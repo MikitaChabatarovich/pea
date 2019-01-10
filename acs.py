@@ -1,11 +1,5 @@
 import utils
 import numpy as np
-<<<<<<< HEAD
-=======
-import time
-import logging
-logging.basicConfig(level=logging.DEBUG, filename='acs.log')
->>>>>>> parent of 5c3beea... put jupyter notebook to notebooks folder and formating
 
 
 class AntColonySystem(object):

@@ -1,6 +1,5 @@
 import utils
 import numpy as np
-import time
 import logging
 logging.basicConfig(level=logging.DEBUG, filename='acs.log')
 
@@ -78,8 +77,7 @@ class AntColonySystem(object):
 
     def attraction(self, i, j):
         if i + j and i != j:
-            result = self.pheromone_matrix[i][j] / \
-                np.power(self.costs_matrix[i][j], self.beta)
+            result = self.pheromone_matrix[i][j] / np.power(self.costs_matrix[i][j], self.beta)
             return result
         else:
             return 0

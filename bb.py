@@ -1,7 +1,6 @@
 import numpy as np
 import heapq
 from node import Node
-import time
 
 
 def set_dig_inf(matrix):

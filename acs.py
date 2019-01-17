@@ -118,9 +118,14 @@ class AntColonySystem(object):
                     lengths[ant] += self.costs_matrix[current][city]
                     self.local_pheromone_udpate(current, city)
             best_len = min(lengths)
+            with open('ant_colony.txt', 'a') as f:
+                    f.write(str(best_len))
+                    f.write('\n')
             if best_len < self.best_length:
                 self.best_length = best_len
                 self.best_tour = tours[np.argmin(lengths)]
+               
+
             self.global_pheromone_udpate()
         result = self.tour_from_matrix()
         return result, utils.calc_tour_length(result, self.costs_matrix)

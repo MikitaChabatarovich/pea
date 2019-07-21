@@ -2,7 +2,7 @@ import numpy as np
 
 
 def greedy_solution(matrix):
-    matrix = set_dig_inf(matrix)
+    matrix = infinity_diagonal(matrix)
     matrix[:, 0] = np.Inf
     min_index = np.argmin(matrix[0])
     visited = [min_index]
@@ -11,6 +11,12 @@ def greedy_solution(matrix):
         min_index = np.argmin(matrix[min_index])
         visited.append(min_index)
     return visited
+
+
+def parse_array(s):
+    line = s.split()
+    arr = [int(n) for n in line if n != '']
+    return np.array(arr)
 
 
 def read_matrix(filename):
@@ -25,33 +31,6 @@ def read_matrix(filename):
             linearr = parse_array(line)
             matrix = np.vstack([matrix, linearr])
         return matrix
-
-
-def parse_array(s):
-    line = s.split()
-    arr = [int(n) for n in line if n != '']
-    return np.array(arr)
-
-
-def set_dig_inf(matrix):
-    matrix = matrix.astype('float')
-    for i in range(matrix.shape[0]):
-        matrix[i][i] = np.Inf
-    return matrix
-
-
-def calc_tour_length(tour, dist_matrix):
-    fr = 0
-    length = 0
-    for city in range(len(tour)):
-        to = tour[city]
-        length += dist_matrix[fr][to]
-        fr = to
-    length += dist_matrix[fr][0]
-    return length
-
-
-# new
 
 
 def infinity_diagonal(matrix):

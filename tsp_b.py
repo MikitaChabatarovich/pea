@@ -5,6 +5,7 @@ from simulated_annealing import SimulatedAnnealing
 from utils import read_matrix, calc_tour_length, set_dig_inf
 import itertools
 
+
 class TSP:
     def __init__(self, dist_matrix=None, filename=None):
         self.dist_matrix = dist_matrix
@@ -28,16 +29,15 @@ class TSP:
         self.minTour = listTour
         self.tourLength = cost
 
-    
     def print_result(self):
         print('Shortest tour is:', self.minTour)
         print('It has a length of:', self.tourLength, 'km')
 
 
 if __name__ == '__main__':
-    tsp = TSP(filename='test/10_test.txt')
+    tsp = TSP(filename='test/6_test.txt')
     start = time.time()
-    tsp.Brute_Force()
+    tsp.BranchAndBound()
     end = time.time()
     tsp.print_result()
     perfom_time = end - start

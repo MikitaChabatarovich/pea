@@ -11,7 +11,7 @@ class BruteForce:
     def solve(self, costs):
         size = costs.shape[0]
         for path in itertools.permutations(range(1, size)):
-            cost = calc_tour_length(path, costs)
+            cost = compute_cost(path, costs)
             if cost < self.final_cost:
                 self.final_cost = cost
                 self.final_path = path

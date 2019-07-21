@@ -4,6 +4,7 @@ from bb import LCBB
 from simulated_annealing import SimulatedAnnealing
 from utils import read_matrix, calc_tour_length, set_dig_inf
 import itertools
+from bb import BranchAndBound
 
 
 class TSP:
@@ -22,12 +23,17 @@ class TSP:
                 self.tourLength = length
                 self.minTour = tour
 
-    def BranchAndBound(self):
-        m = set_dig_inf(self.dist_matrix)
-        tour, cost = LCBB(m)
-        listTour = [edge[0] for edge in tour]
-        self.minTour = listTour
-        self.tourLength = cost
+    def RBranchAndBound(self):
+        # m = set_dig_inf(self.dist_matrix)
+        # tour, cost = LCBB(m)
+        # listTour = [edge[0] for edge in tour]
+        # self.minTour = listTour
+        # self.tourLength = cost
+        bnb = BranchAndBound()
+        bnb.solve(self.dist_matrix)
+        path = [edge[0] for edge in bnb.final_path][1:]
+        print(path)
+        print(calc_tour_length(path, self.dist_matrix))
 
     def print_result(self):
         print('Shortest tour is:', self.minTour)
@@ -37,8 +43,8 @@ class TSP:
 if __name__ == '__main__':
     tsp = TSP(filename='test/6_test.txt')
     start = time.time()
-    tsp.BranchAndBound()
+    tsp.RBranchAndBound()
     end = time.time()
-    tsp.print_result()
+    # tsp.print_result()
     perfom_time = end - start
     print("time: ", perfom_time)

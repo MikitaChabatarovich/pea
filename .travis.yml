@@ -1,0 +1,10 @@
+language: python
+  python:
+    - "3.6"
+  install:
+    - pip install pycodestyle pyflakes vulture
+  script:
+    - pyflakes .
+    - pycodestyle --max-line-length=120 .
+    - vulture --min-confidence=100 .
+    - python3 -m pytest test/

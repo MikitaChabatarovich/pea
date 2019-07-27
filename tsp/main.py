@@ -1,7 +1,7 @@
 import time
 import utils
-from acs import AntColonySystem
-from bnb import BranchAndBound
+# from acs import AntColonySystem
+# from bnb import BranchAndBound
 from local_search.simulated_annealing import SimulatedAnnealing
 
 if __name__ == "__main__":

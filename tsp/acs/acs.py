@@ -102,7 +102,6 @@ class AntColonySystem(object):
         self.tau = self.compute_tau(self.costs_matrix)
         self.pheromone_matrix = self.tau * np.ones((self.size, self.size))
         for _ in range(self.num_iter):
-            costs = np.zeros(self.num_ants)
             ants = [Ant(self.size) for _ in range(self.num_ants)]
             for ant in ants:
                 ant.visited[0] = True

@@ -4,6 +4,7 @@ import random
 from utils import compute_cost
 from utils import greedy_solution
 from .neighbours import random_swap
+from .neighbours import state_generators_map
 
 
 def transition_probability(delta_energy, T):
@@ -14,13 +15,20 @@ def make_transition(p):
     return random.uniform(0, 1) <= p
 
 
+class UnknownStateGeneratorError(Exception):
+    pass
+
+
 class SimulatedAnnealing:
-    def __init__(self, init_T=None, end_T=None, cooling_factor=None):
+    def __init__(self, init_T=None, end_T=None, cooling_factor=None, state_gen='swap'):
         self.init_T = init_T if init_T else 10 * 10
         self.end_T = end_T if end_T else 0.1
         self.cooling_factor = cooling_factor if cooling_factor else 0.99
         self.final_cost = None
         self.final_path = None
+        self.state_gen = state_generators_map.get(state_gen, None)
+        if not self.state_gen:
+            raise UnknownStateGeneratorError(f'{state_gen} is uknown value for state generator')
 
     def solve(self, costs_matrix, n_iter=None, init_state=None):
         state = greedy_solution(costs_matrix) if not init_state else init_state

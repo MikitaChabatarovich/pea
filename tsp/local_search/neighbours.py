@@ -43,3 +43,8 @@ def random_invert(state):
 def random_swap(state):
     i, j = random_transition(len(state))
     return swap(state, i, j)
+
+
+state_generators_map = {'insert': insert,
+                        'invert': invert,
+                        'swap': swap}

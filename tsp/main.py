@@ -7,7 +7,7 @@ from local_search.simulated_annealing import SimulatedAnnealing
 if __name__ == "__main__":
     n = input('number of cities  ')
     m = utils.read_matrix(f'../test/{n}_test.txt')
-    solver = SimulatedAnnealing()
+    solver = SimulatedAnnealing(state_gen='invert')
     start = time.monotonic()
     solver.solve(m)
     end = time.monotonic()

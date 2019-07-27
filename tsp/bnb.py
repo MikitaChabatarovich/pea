@@ -1,3 +1,4 @@
+import gc
 import numpy as np
 import heapq
 from node import Node
@@ -15,7 +16,6 @@ class BranchAndBound:
         live_nodes = []
         root = Node(self.costs_matrix)
         heapq.heappush(live_nodes, root)
-        upper_bound = np.Inf
 
         while live_nodes:
             node = heapq.heappop(live_nodes)
@@ -36,3 +36,5 @@ class BranchAndBound:
                                     p_lb=node.lower_bound)
 
                     heapq.heappush(live_nodes, new_node)
+            del node
+            gc.collect()  # 95% less memory 120% slower

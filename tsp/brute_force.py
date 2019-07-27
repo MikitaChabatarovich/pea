@@ -1,6 +1,6 @@
 import itertools
 import numpy as np
-from utils import calc_tour_length
+from utils import compute_cost
 
 
 class BruteForce:

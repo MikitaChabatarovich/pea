@@ -4,6 +4,7 @@ python:
 install:
   - pip install pytest pycodestyle pyflakes vulture
 script:
+  - cd tsp
   - pyflakes .
   - pycodestyle --max-line-length=120 .
   - vulture --min-confidence=100 .

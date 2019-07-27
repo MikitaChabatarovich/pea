@@ -2,12 +2,12 @@ import time
 import utils
 from acs import AntColonySystem
 from bnb import BranchAndBound
-
+from local_search.simulated_annealing import SimulatedAnnealing
 
 if __name__ == "__main__":
     n = input('number of cities  ')
     m = utils.read_matrix(f'../test/{n}_test.txt')
-    solver = BranchAndBound()
+    solver = SimulatedAnnealing()
     start = time.monotonic()
     solver.solve(m)
     end = time.monotonic()

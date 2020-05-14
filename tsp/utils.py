@@ -34,7 +34,7 @@ def read_matrix(filename):
 
 
 def infinity_diagonal(matrix):
-    matrix = matrix.astype('float')  # ??
+    matrix = matrix.astype('float')
     for i in range(matrix.shape[0]):
         matrix[i][i] = np.Inf
     return matrix

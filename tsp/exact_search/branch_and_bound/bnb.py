@@ -1,7 +1,7 @@
 import gc
 import numpy as np
 import heapq
-from node import Node
+from .node import Node
 from utils import infinity_diagonal
 
 

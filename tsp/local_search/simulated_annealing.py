@@ -20,26 +20,25 @@ class UnknownStateGeneratorError(Exception):
 
 
 class SimulatedAnnealing:
-    def __init__(self, init_T=None, end_T=None, cooling_factor=None, state_gen='swap'):
+    def __init__(self, init_T=None, end_T=None, cooling_factor=None, state_gen='swap', n_iter=1000):
         self.init_T = init_T if init_T else 10 * 10
         self.end_T = end_T if end_T else 0.1
         self.cooling_factor = cooling_factor if cooling_factor else 0.99
         self.final_cost = None
         self.final_path = None
+        self.n_iter = n_iter
         self.state_gen = state_generators_map.get(state_gen, None)
         if not self.state_gen:
             raise UnknownStateGeneratorError(f'{state_gen} is uknown value for state generator')
 
-    def solve(self, costs_matrix, n_iter=None, init_state=None):
+    def solve(self, costs_matrix, init_state=None):
         state = greedy_solution(costs_matrix) if not init_state else init_state
         current_energy = compute_cost(state, costs_matrix)
         best_state = state
         best_state_energy = current_energy
         T = self.init_T
 
-        n_iter = 10000 if not n_iter else n_iter
-
-        for _ in range(1, n_iter):
+        for _ in range(1, self.n_iter):
             candidat_state = random_swap(state)
             candidant_energy = compute_cost(candidat_state, costs_matrix)
 

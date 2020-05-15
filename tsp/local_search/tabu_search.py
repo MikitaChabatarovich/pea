@@ -1,44 +1,59 @@
-# from utils import greedy_solution, read_matrix, calc_tour_length
-# from simulated_annealing import random_tour
-# import itertools
-# from numpy import Inf
+from collections import namedtuple
+import itertools
+
+from utils import greedy_solution, compute_cost
+from .neighbours import swap
 
 
-# def TabuSearch(matrix):
-#     pass
+Neighour = namedtuple('Neighour', 'path, move')
 
 
-# def best_neighbor(state, matrix):
-#     b_neighbor = None
-#     min_length = Inf
-#     for tour in neighors_generator(state):
-#         length = calc_tour_length(tour, matrix)
-#         if length < min_length:
-#             min_length = length
-#             b_neighbor = tour
-#     return b_neighbor, length
+def get_neighours(state):
+    for move in itertools.combinations(range(len(state)), 2):
+        new_state = swap(state, *move)
+        yield Neighour(new_state, move)
 
+class TabuSearch:
 
-# def neighors_generator(state):
-#     for tranform in itertools.combinations(range(len(state)), 2):
-#         yield make_neighor(state, tranform)
+    def __init__(self, init_state=None, n_iter=1000, tabu_size=5):
+        self.n_iter = n_iter
+        self.init_state = init_state
+        self.tabu_size = tabu_size
+        self.final_cost = None
+        self.final_cost = None
 
+    def aspiration_criteria(self, cost):
+        return cost < self.final_cost
 
-# def make_neighor(state, indexes):
-#     neighor = list(state)
-#     i = indexes[0]
-#     j = indexes[1]
-#     if i > j:
-#         neighor[j], neighor[i] = neighor[i], neighor[j]
-#     else:
-#         neighor[i], neighor[j] = neighor[j], neighor[i]
-#     return neighor
+    def solve(self, matrix):
+        if self.init_state is None:
+            self.init_state = greedy_solution(matrix)
 
+        current_state = self.init_state
+        current_cost = compute_cost(current_state, matrix)
+        best_move = None
 
-# if __name__ == "__main__":
-#     matrix = read_matrix('test/6_test.txt')
-#     st = random_tour(len(matrix))
-#     print(st, calc_tour_length(st, matrix))
-#     print('-----------------')
-#     bn, length = best_neighbor(st, matrix)
-#     print(bn, length)
+        self.final_path = current_state
+        self.final_cost = current_cost
+
+        tabus = []
+
+        for _ in range(self.n_iter):
+            neighbours = get_neighours(current_state)
+            neighbours_costs = map(lambda state: compute_cost(state.path, matrix), neighbours)
+            neighbours_with_cost = zip(neighbours_costs, neighbours)
+            for cost, neighbour in sorted(neighbours_with_cost):
+                if cost < current_cost:
+                    if neighbour.move not in tabus or self.aspiration_criteria(cost):
+                        current_cost = cost
+                        current_state = neighbour.path
+                        best_move = neighbour.move
+
+            if current_cost < self.final_cost:
+                self.final_cost = current_cost
+                self.final_path = current_state
+
+            tabus.append(best_move)
+
+            if len(tabus) > self.tabu_size:
+                tabus.pop(0)

@@ -6,6 +6,7 @@ import pprint
 import utils
 
 from local_search.simulated_annealing import SimulatedAnnealing
+from local_search.tabu_search import TabuSearch
 from exact_search.dynamic_programming import Dynamic
 from exact_search.branch_and_bound import BranchAndBound
 from exact_search.brute_force import BruteForce
@@ -13,6 +14,7 @@ from population_search.acs import AntColonySystem
 
 solvers = [
     SimulatedAnnealing(state_gen='invert'),
+    TabuSearch(),
     Dynamic(),
     BruteForce(),
     AntColonySystem(),

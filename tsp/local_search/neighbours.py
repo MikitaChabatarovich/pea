@@ -21,7 +21,7 @@ def swap(state, i, j):
     return new_state
 
 
-def random_transition(n):
+def get_random_move(n):
     i = random.randint(0, n - 1)
     j = random.randint(0, n - 1)
     while i >= j:
@@ -30,21 +30,8 @@ def random_transition(n):
     return i, j
 
 
-def random_insert(state):
-    i, j = random_transition(len(state))
-    return insert(state, i, j)
-
-
-def random_invert(state):
-    i, j = random_transition(len(state))
-    return invert(state, i, j)
-
-
-def random_swap(state):
-    i, j = random_transition(len(state))
-    return swap(state, i, j)
-
-
-state_generators_map = {'insert': insert,
-                        'invert': invert,
-                        'swap': swap}
+moves_map = {
+    'insert': insert,
+    'invert': invert,
+    'swap': swap
+}

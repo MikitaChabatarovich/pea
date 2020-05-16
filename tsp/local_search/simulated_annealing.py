@@ -3,8 +3,8 @@ import random
 
 from utils import compute_cost
 from utils import greedy_solution
-from .neighbours import random_swap
-from .neighbours import state_generators_map
+from .neighbours import moves_map
+from .neighbours import get_random_move
 
 
 def transition_probability(delta_energy, T):
@@ -27,7 +27,7 @@ class SimulatedAnnealing:
         self.final_cost = None
         self.final_path = None
         self.n_iter = n_iter
-        self.state_gen = state_generators_map.get(state_gen, None)
+        self.state_gen = moves_map.get(state_gen, None)
         if not self.state_gen:
             raise UnknownStateGeneratorError(f'{state_gen} is uknown value for state generator')
 
@@ -38,8 +38,11 @@ class SimulatedAnnealing:
         best_state_energy = current_energy
         T = self.init_T
 
+        size = len(state)
+
         for _ in range(1, self.n_iter):
-            candidat_state = random_swap(state)
+            move = get_random_move(size)
+            candidat_state = self.state_gen(state, *move)
             candidant_energy = compute_cost(candidat_state, costs_matrix)
 
             if(candidant_energy < current_energy):

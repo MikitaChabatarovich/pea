@@ -15,3 +15,5 @@ class BruteForce:
             if cost < self.final_cost:
                 self.final_cost = cost
                 self.final_path = path
+
+        self.final_path = list(self.final_path)

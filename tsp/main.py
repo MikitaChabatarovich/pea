@@ -13,7 +13,7 @@ from exact_search.brute_force import BruteForce
 from population_search.acs import AntColonySystem
 
 solvers = [
-    SimulatedAnnealing(state_gen='invert'),
+    SimulatedAnnealing(),
     TabuSearch(),
     Dynamic(),
     BruteForce(),

@@ -2,25 +2,28 @@ from collections import namedtuple
 import itertools
 
 from utils import greedy_solution, compute_cost
-from .neighbours import swap
+from .neighbours import moves_map
 
 
 Neighour = namedtuple('Neighour', 'path, move')
 
 
-def get_neighours(state):
-    for move in itertools.combinations(range(len(state)), 2):
-        new_state = swap(state, *move)
-        yield Neighour(new_state, move)
-
 class TabuSearch:
 
-    def __init__(self, init_state=None, n_iter=1000, tabu_size=5):
+    def __init__(self, init_state=None, n_iter=1000, tabu_size=5, move_func='swap'):
         self.n_iter = n_iter
         self.init_state = init_state
         self.tabu_size = tabu_size
         self.final_cost = None
         self.final_cost = None
+        self.move_func = moves_map.get(move_func, None)
+        if not self.move_func:
+            raise UnknownStateGeneratorError(f'{state_gen} is uknown value for move_func. should be: {moves_map.keys()}')
+
+    def get_neighours(self, state):
+        for move in itertools.combinations(range(len(state)), 2):
+            new_state = self.move_func(state, *move)
+            yield Neighour(new_state, move)
 
     def aspiration_criteria(self, cost):
         return cost < self.final_cost
@@ -39,7 +42,7 @@ class TabuSearch:
         tabus = []
 
         for _ in range(self.n_iter):
-            neighbours = get_neighours(current_state)
+            neighbours = self.get_neighours(current_state)
             neighbours_costs = map(lambda state: compute_cost(state.path, matrix), neighbours)
             neighbours_with_cost = zip(neighbours_costs, neighbours)
             for cost, neighbour in sorted(neighbours_with_cost):
